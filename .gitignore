@@ -1,0 +1,23 @@
+# Environnement virtuel
+venv/
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Data & modèles (souvent lourds)
+data/
+models/
+
+# ML / notebooks
+.ipynb_checkpoints/
+
+# Logs & outputs
+logs/
+outputs/
+
+# OS
+.DS_Store
