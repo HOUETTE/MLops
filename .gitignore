@@ -9,8 +9,16 @@ __pycache__/
 *.pyd
 
 # Data & modèles (souvent lourds)
-data/
-models/
+data/raw/
+data/processed/
+models/*.joblib
+models/*.pkl
+models/*.pickle
+
+# Keep structure files and final processed data
+!data/spam.csv
+!models/.gitkeep
+!models/*_metrics.json
 
 # ML / notebooks
 .ipynb_checkpoints/
