@@ -1,2 +1,1 @@
-# Dépendances système pour Streamlit Cloud (si nécessaires)
-# Ce fichier est vide pour l'instant car l'app n'a besoin que de Python
+# No system packages needed
