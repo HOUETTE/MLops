@@ -45,14 +45,20 @@ _api_metrics = {
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Application lifespan events - fast startup, lazy model loading."""
+    """Application lifespan events - load model at startup."""
     # Startup: Don't load model yet for faster health checks
     print("=" * 80)
     print("🚀 Spam Detector API Starting...")
     print("=" * 80)
     print(f"✓ API version: {API_VERSION}")
-    print("⚠️  Model will be loaded on first prediction (lazy loading)")
+    print("⏳ Loading model at startup...")
     print("=" * 80)
+
+    try:
+        get_model()
+        print("✓ Model loaded at startup")
+    except Exception as exc:
+        print(f"✗ Model failed to load at startup: {exc}")
 
     yield
 
