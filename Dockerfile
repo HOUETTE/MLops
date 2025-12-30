@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first (for better caching)
-COPY requirements.txt .
+COPY requirements-full.txt requirements.txt
 
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
