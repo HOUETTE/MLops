@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 # URL de l'API (par défaut localhost, modifiable dans la sidebar)
-DEFAULT_API_URL = "http://localhost:8000"
+DEFAULT_API_URL = "http://54.75.77.83:8000"
 
 # Sidebar - Configuration
 st.sidebar.title("⚙️ Configuration")
