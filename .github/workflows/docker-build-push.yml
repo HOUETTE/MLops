@@ -7,8 +7,10 @@ on:
     paths:
       - 'src/**'
       - 'models/**'
+      - 'app.py'
       - 'Dockerfile'
       - 'requirements.txt'
+      - 'requirements-full.txt'
       - 'start.sh'
       - '.github/workflows/docker-build-push.yml'
   workflow_dispatch:  # Permet de lancer manuellement
@@ -40,7 +42,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image for AMD64
+      - name: Build and push Docker image for AMD64
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
@@ -49,7 +51,7 @@ jobs:
             --platform linux/amd64 \
             --tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
             --tag $ECR_REGISTRY/$ECR_REPOSITORY:latest \
-            --load \
+            --push \
             .
 
       - name: Run Trivy vulnerability scanner
@@ -59,14 +61,6 @@ jobs:
           format: 'table'
           exit-code: '0'
           severity: 'CRITICAL,HIGH'
-
-      - name: Push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Image digest
         run: echo "Image pushed with digest ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest"
