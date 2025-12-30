@@ -39,6 +39,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 # Copy application code
 COPY --chown=appuser:appuser src/ /app/src/
 COPY --chown=appuser:appuser models/ /app/models/
+COPY --chown=appuser:appuser app.py /app/app.py
 COPY --chown=appuser:appuser start.sh /app/start.sh
 
 # Make startup script executable
@@ -46,8 +47,8 @@ USER root
 RUN chmod +x /app/start.sh
 USER appuser
 
-# Expose port
-EXPOSE 8000
+# Expose ports (API + Streamlit)
+EXPOSE 8000 8501
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
