@@ -45,21 +45,14 @@ _api_metrics = {
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Application lifespan events - load model on startup."""
-    # Startup: Load model into cache
-    try:
-        model = get_model()
-        metrics = get_metrics()
-        print("=" * 80)
-        print("🚀 Spam Detector API Starting...")
-        print("=" * 80)
-        print(f"✓ Model loaded: {metrics.get('model', 'unknown')}")
-        print(f"✓ Accuracy: {metrics.get('accuracy', 0):.2%}")
-        print(f"✓ API version: {API_VERSION}")
-        print("=" * 80)
-    except Exception as e:
-        print(f"✗ Failed to load model on startup: {e}")
-        print("⚠️  API will start but predictions will fail until model is loaded")
+    """Application lifespan events - fast startup, lazy model loading."""
+    # Startup: Don't load model yet for faster health checks
+    print("=" * 80)
+    print("🚀 Spam Detector API Starting...")
+    print("=" * 80)
+    print(f"✓ API version: {API_VERSION}")
+    print("⚠️  Model will be loaded on first prediction (lazy loading)")
+    print("=" * 80)
 
     yield
 
@@ -114,13 +107,17 @@ async def health_check() -> HealthResponse:
 
     Returns:
         HealthResponse with status and model information
+
+    Note:
+        Always returns 'healthy' status for App Runner compatibility.
+        Model is loaded lazily on first prediction request.
     """
     _api_metrics["total_requests"] += 1
 
     model_info = get_model_info()
 
     return HealthResponse(
-        status="healthy" if model_info["loaded"] else "degraded",
+        status="healthy",  # Always healthy - model loads on-demand
         model_loaded=model_info["loaded"],
         model_name=model_info.get("model_name"),
         version=API_VERSION,

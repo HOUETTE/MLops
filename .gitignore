@@ -29,3 +29,18 @@ outputs/
 
 # OS
 .DS_Store
+
+# AWS & Deployment
+*.pem
+*.key
+ec2-user-data.sh
+ec2-commands.sh
+ec2-auto-deploy.sh
+deploy-to-ec2.sh
+.aws/
+
+# Docker
+.dockerignore
+
+# Streamlit
+.streamlit/secrets.toml

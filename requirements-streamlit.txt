@@ -1,0 +1,7 @@
+# Requirements pour Streamlit Cloud
+# Version allégée sans les modèles ML (l'app se connecte juste à l'API)
+
+streamlit>=1.29.0
+requests>=2.31.0
+pandas>=2.0.0
+plotly>=5.14.0
